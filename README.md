@@ -1,2 +1,2 @@
-# minecraft_turtle
-minecraft_turtle
+# Minecraft Turtle
+Utilities and lua code for turtles in minecraft
