@@ -18,7 +18,7 @@ end
 local index = tonumber(char)
 
 local directive = directives[index]
-local configFile = fs.open("/config", "r")
+local configFile = fs.open("/config", "w")
 configFile.writeLine(directive)
 configFile.close()
 
