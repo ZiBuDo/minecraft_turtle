@@ -43,7 +43,7 @@ function directions.pickUpFromFile(file)
 	local rights = file.readLine()
 	local ups = file.readLine()
 	local facing = file.readLine()
-	sys.log("Location picked up from " .. file .. ": " .. tostring(forwards) .. ", " .. tostring(rights) .. ", " .. tostring(ups) .. ", " facing)
+	sys.log("Location picked up from " .. file .. ": " .. tostring(forwards) .. ", " .. tostring(rights) .. ", " .. tostring(ups) .. ", " .. facing)
 	directions.setPosition(forwards, rights, ups, facing)
 	file.close()
 end
@@ -304,7 +304,7 @@ function directions.right(dig, attack, suck, noCheckInv)
 end
 
 function directions.goToPosition(fs, rs, us, facing)
-	sys.log("Going To Position: " .. tostring(fs) .. ", " .. tostring(rs) .. ", " .. tostring(us) .. ", " facing)
+	sys.log("Going To Position: " .. tostring(fs) .. ", " .. tostring(rs) .. ", " .. tostring(us) .. ", " .. facing)
 	-- face forward
 	directions.setFacing("forward")
 	-- reduce and follow
