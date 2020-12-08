@@ -10,18 +10,17 @@ for key, value in pairs(directives) do
 end
 print("Press a #")
 
+local _, char
 while true do
-    local _, char = os.pullEvent("char")
-    if directives[tonumber(char)] == "n" then
+    _, char = os.pullEvent("char")
+    if directives[tonumber(char)] then
         break
     else
         error()
     end
 end
 
-local index = tonumber(char)
-
-local directive = directives[index]
+local directive = directives[tonumber(char)]
 print("Installing directive " .. directive)
 local configFile = fs.open("/config", "w")
 configFile.writeLine(directive)
