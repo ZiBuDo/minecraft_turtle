@@ -81,18 +81,16 @@ end
 function inventory.refuel()
 	local currentLevel = turtle.getFuelLevel()
 	if currentLevel < fuelSafetyThreshold then --check fuel
-		sys.log("[fuelCheck]: Fuel Level Low!")
-		if turtle.getItemCount(fuel) > 0 then
-			sys.log("[fuelCheck]: Refueling!")
-			repeat
-				turtle.select(fuel)
-			until turtle.refuel(1) or turtle.getSelectedSlot() == fuel
-			if turtle.getFuelLevel() > fuelSafetyThreshold then
-				sys.log("[fuelCheck]: Refuel Successful!")
-			else
-				sys.log("[fuelCheck]: Refuel Unsuccessful, Initiating return!")
-				return false
-			end
+		sys.log("[fuelCheck]: Fuel Level Low! Attempting to Refuel")
+		while turtle.getItemCount(fuel) > 0 and not (turtle.getFuelLevel() > fuelSafetyThreshold) do
+			turtle.select(fuel)
+			turtle.refuel(1)
+		end
+		if turtle.getFuelLevel() > fuelSafetyThreshold then
+			sys.log("[fuelCheck]: Refuel Successful!")
+		else
+			sys.log("[fuelCheck]: Refuel Unsuccessful, Initiating return!")
+			return false
 		end
 	end
 end
