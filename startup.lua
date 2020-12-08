@@ -45,10 +45,10 @@ else
     print("Installing Utils")
 
     for key, value in pairs(utils) do
-        print("Installing Util " .. key)
-        if fs.exists("/" .. key) then
-            print("Removing old " .. key)
-            fs.delete("/" .. key)
+        print("Installing Util " .. value)
+        if fs.exists("/" .. value) then
+            print("Removing old " .. value)
+            fs.delete("/" .. value)
         end
         shell.run("wget", buildUrl(value), value)
 	end

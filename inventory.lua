@@ -2,7 +2,7 @@
 	Inventory turtle methods
 ]]--
 
-local sys = require("/sys")
+local sys = require("sys")
 
 local inventory = {}
 

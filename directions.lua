@@ -5,7 +5,7 @@
 	direction facing
 ]]--
 
-local sys, inventory = require("/sys"), require("/inventory")
+local sys, inventory = require("sys"), require("inventory")
 local directions = {}
 
 -- direction can be facing forward, facing right, facing left or facing backwards and manipulates what forward means
@@ -405,7 +405,7 @@ function directions.dropOffInventory()
 	end
 	local space = true
 	-- at bottom
-	for i = invStart, invEnd then
+	for i = invStart, invEnd do
 		if turtle.getItemCount(i) > 0 then
 			turtle.select(i)
 			if not drop() then

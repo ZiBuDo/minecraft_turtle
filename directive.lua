@@ -2,7 +2,7 @@
     Thread executor for a directive
 ]]--
 
-local sys, directions = require("/sys"), require("/directions")
+local sys, directions = require("sys"), require("directions")
 
 local directive = {}
 

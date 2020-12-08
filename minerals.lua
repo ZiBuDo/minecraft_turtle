@@ -2,7 +2,7 @@
 	Minerals Metadata
 ]]--
 
-local metadata, inventory = require("/metadata"), require("/inventory")
+local metadata, inventory = require("metadata"), require("inventory")
 
 local minerals = {}
 
