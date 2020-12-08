@@ -5,7 +5,7 @@
 	direction facing
 ]]--
 
-local sys, inventory = require("sys"), require("inventory")
+local sys, inventory = require("/sys"), require("/inventory")
 local directions = {}
 
 -- direction can be facing forward, facing right, facing left or facing backwards and manipulates what forward means

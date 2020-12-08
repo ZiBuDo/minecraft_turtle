@@ -8,8 +8,8 @@
 	chest for loot below
 ]]--
  
-local inventory, sys, directive, metadata = require("inventory"), require("sys"), require("directive"), require("metadata")
-local directions, minerals = require("directions"), require("minerals")
+local inventory, sys, directive, metadata = require("/inventory"), require("/sys"), require("/directive"), require("/metadata")
+local directions, minerals = require("/directions"), require("/minerals")
 
 local args, bucket, branchSize = { ... }, 1, 15
 

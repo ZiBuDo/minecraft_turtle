@@ -5,7 +5,7 @@
 	fuel below it
 ]]--
 
-local inventory, directions, loot, directive = require("inventory"), require("directions"), require("loot"), require("directive")
+local inventory, directions, loot, directive = require("/inventory"), require("/directions"), require("/loot"), require("/directive")
 
 local args = { ... }
 
