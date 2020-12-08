@@ -2,9 +2,9 @@
 	Return to home
 ]]--
 
-local directions, utils = require("directions"), require("inventory")
+local directions, sys = require("directions"), require("sys")
 
-utils.log("Going Home No Matter What!")
+sys.log("Going Home No Matter What!")
 directions.pickUpFromFile("directions")
 directions.goHome()
-utils.log("Made It Home!")
+sys.log("Made It Home!")
