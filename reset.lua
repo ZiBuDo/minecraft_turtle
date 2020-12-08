@@ -3,13 +3,18 @@
 ]]--
 
 local directive
-    if fs.exists("/config") then
-        local configFile = fs.open("/config")
-        directive = configFile.readLine()
-        configFile.close()
-    end
+if fs.exists("/config") then
+    local configFile = fs.open("/config")
+    directive = configFile.readLine()
+    configFile.close()
+end
 
-print("Are you sure you wish to reset this " .. directive .. "bot?")
+if directive then
+    print("Are you sure you wish to reset this " .. directive .. " bot?")
+else
+    print("Are you sure you wish to reset this bot?")
+end
+
 while true do
     local _, char = os.pullEvent("char")
     if char:lower() == "n" then

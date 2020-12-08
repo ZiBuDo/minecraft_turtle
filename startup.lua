@@ -61,7 +61,7 @@ else
         configFile.close()
     end
 
-    if directive ~= nil then
+    if directive then
         -- Install Directive
         print("Installing Directive " .. directive)
         if fs.exists("/" .. directive) then
