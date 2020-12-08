@@ -406,7 +406,7 @@ function directions.dropOffInventory()
 	end
 	local space = true
 	-- at bottom
-	for i = invStart, invEnd do
+	for i = inventory.getInvStart(), inventory.getInvEnd() do
 		if turtle.getItemCount(i) > 0 then
 			turtle.select(i)
 			if not drop() then
