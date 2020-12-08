@@ -8,7 +8,7 @@
 local sys, inventory = require("sys"), require("inventory")
 local directions = {}
 
--- direction can be facing forward, facing right, facing left or facing backwards and manipulates what forward means
+-- direction can be facing forward, facing right, facing left or facing backward and manipulates what forward means
 local direction = "forward"
 
 local forwards, rights, ups = 0, 0, 0
@@ -73,6 +73,7 @@ function directions.getFacingInt(facing)
 	elseif facing == "left" then
 		return 3
 	end
+	return 0 -- up and down
 end
 
 function directions.setFacing(facing)
@@ -321,12 +322,12 @@ function directions.goToPosition(fowards, ups, downs, facing)
 	local dist = directions.getForwards()
 	sys.log("distance: " .. tostring(dist))
 	if dist > 0 then
-		-- go backwards
+		-- go backward
 		for i = 1, dist do
 			backward(true, true, false, true)
 		end
 	elseif dist < 0 then
-		-- go forwards
+		-- go forward
 		for i = 1, -dist do
 			forward(true, true, false, true)
 		end
