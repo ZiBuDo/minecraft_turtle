@@ -34,16 +34,16 @@ function directions.setPosition(fs, rs, us, facing)
 	direction = facing
 end
 
-function directions.pickUpFromFile(file)
-	if not fs.exists("/" .. file) then
+function directions.pickUpFromFile(fileName)
+	if not fs.exists("/" .. fileName) then
 		return
 	end
-	local file = fs.open("/" .. file, "r")
+	local file = fs.open("/" .. fileName, "r")
 	local forwards = file.readLine()
 	local rights = file.readLine()
 	local ups = file.readLine()
 	local facing = file.readLine()
-	sys.log("Location picked up from " .. file .. ": " .. tostring(forwards) .. ", " .. tostring(rights) .. ", " .. tostring(ups) .. ", " .. facing)
+	sys.log("Location picked up from " .. fileName .. ": " .. tostring(forwards) .. ", " .. tostring(rights) .. ", " .. tostring(ups) .. ", " .. facing)
 	directions.setPosition(forwards, rights, ups, facing)
 	file.close()
 end
