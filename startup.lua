@@ -21,7 +21,7 @@ function buildUrl(name)
     return url .. name .. ext
 end
 
-local utils = { "loot", "minerals", "metadata", "status", "directions", "inventory", "home", "sys"}
+local utils = { "loot", "minerals", "metadata", "directions", "inventory", "home", "sys", "set", "reset", "directive" }
 
 local directives = { "miner", "dungeon" }
 
