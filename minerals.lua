@@ -68,7 +68,7 @@ end
 
 -- check if a inv spot is a resource
 function minerals.isResource(detail)
-	for key, value in pairs(minerals) do
+	for key, value in pairs(blocks) do
 		if detail.name == value then
 			 return true
 		end
