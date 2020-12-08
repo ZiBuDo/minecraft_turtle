@@ -116,6 +116,7 @@ function directions.suck(direction, noCheck)
 			directions.loop()
 		end
 	end
+	return sucked
 end
 
 function directions.dig(direction, noCheck)
@@ -136,6 +137,7 @@ function directions.dig(direction, noCheck)
 			directions.loop()
 		end
 	end
+	return dug
 end
 
 function directions.recordPosition(file)
@@ -200,17 +202,21 @@ function directions.forward(dig, attack, suck, noCheckInv)
 		directions.suck(nil, noCheckInv)
 	end
 	local moved = turtle.forward()
+	local unstuck = false
     while not moved do
         if dig == true then
-			directions.dig(nil, noCheckInv)
+			unstuck = directions.dig(nil, noCheckInv)
 		end
 		if attack == true then
-			while turtle.attack() do end
+			while turtle.attack() do unstuck = true end
 		end
 		if suck == true then
 			directions.suck(nil, noCheckInv)
 		end
 		moved = turtle.forward()
+		if not moved and not unstuck then
+			break
+		end
 	end
 	if moved then
 		calculateForwardsMovement()
@@ -239,15 +245,20 @@ function directions.up(dig, attack, suck, noCheckInv)
 		directions.suck("up", noCheckInv)
 	end
 	local moved = turtle.up()
+	local unstuck = false
 	while not moved do
 		if dig == true then
-            directions.dig("up", noCheckInv)
+            unstuck = directions.dig("up", noCheckInv)
         end
         if attack == true then
-            while turtle.attackUp() do end
+            while turtle.attackUp() do unstuck = true end
 		end
 		if suck == true then
 			directions.suck("up", noCheckInv)
+		end
+		moved = turtle.up()
+		if not moved and not unstuck then
+			break
 		end
 	end
 	if moved then
@@ -268,15 +279,20 @@ function directions.down(dig, attack, suck, noCheckInv)
 		directions.suck("down", noCheckInv)
 	end
 	local moved = turtle.down()
+	local unstuck = false
 	while not moved do
 		if dig == true then
-            directions.dig("down", noCheckInv)
+            unstuck = directions.dig("down", noCheckInv)
         end
         if attack == true then
-            while turtle.attackDown() do end
+            while turtle.attackDown() do unstuck = true end
 		end
 		if suck == true then
 			directions.suck("down", noCheckInv)
+		end
+		moved = turtle.down()
+		if not moved and not unstuck then
+			break
 		end
 	end
 	if moved then
