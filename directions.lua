@@ -286,12 +286,13 @@ function directions.right(dig, attack, suck)
 	return result
 end
 
-function directions.goToPosition(fowards, ups, downs, facing)
+function directions.goToPosition(forwards, rights, ups, facing)
+	sys.log("Going to position ", forwards, rights, ups, facing)
 	-- face forward
 	directions.setFacing("forward")
 	-- reduce and follow
 	-- up + down
-	local vertical = directions.getUps()
+	local vertical = ups
 	sys.log("vertical: " .. tostring(vertical))
 	if vertical > 0 then
 		-- go down
@@ -305,7 +306,7 @@ function directions.goToPosition(fowards, ups, downs, facing)
 		end
 	end
 	-- left + right
-	local horizontal = directions.getRights()
+	local horizontal = rights
 	sys.log("horizontal: " .. tostring(horizontal))
 	if horizontal > 0 then
 		-- go right
@@ -319,7 +320,7 @@ function directions.goToPosition(fowards, ups, downs, facing)
 		end
 	end
 	-- foward + back
-	local dist = directions.getForwards()
+	local dist = forwards
 	sys.log("distance: " .. tostring(dist))
 	if dist > 0 then
 		-- go backward
