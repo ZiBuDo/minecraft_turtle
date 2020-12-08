@@ -43,6 +43,7 @@ function directions.pickUpFromFile(file)
 	local rights = file.readLine()
 	local ups = file.readLine()
 	local facing = file.readLine()
+	sys.log("Location picked up from " .. file .. ": " .. tostring(forwards) .. ", " .. tostring(rights) .. ", " .. tostring(ups) .. ", " facing)
 	directions.setPosition(forwards, rights, ups, facing)
 	file.close()
 end
@@ -191,17 +192,23 @@ function calculateForwardsMovement()
 	directions.recordDirections()
 end
 
-function directions.forward(dig, attack, suck)
+function directions.forward(dig, attack, suck, noCheckInv)
+	if attack == true then
+		while turtle.attack() do end
+	end
+	if suck == true then
+		directions.suck(nil, noCheckInv)
+	end
 	local moved = turtle.forward()
     while not moved do
         if dig == true then
-            while turtle.dig() do end
-        end
-        if attack == true then
-            while turtle.attack() do end
+			directions.dig(nil, noCheckInv)
+		end
+		if attack == true then
+			while turtle.attack() do end
 		end
 		if suck == true then
-			directions.suck()
+			directions.suck(nil, noCheckInv)
 		end
 		moved = turtle.forward()
 	end
@@ -214,29 +221,34 @@ function directions.forward(dig, attack, suck)
 	return moved
 end
 
-function directions.backward(dig, attack, suck)
+function directions.backward(dig, attack, suck, noCheckInv)
 	--face forward effectively and go then face back
 	directions.turnLeft()
 	directions.turnLeft()
-	local result = directions.forward(dig, attack, suck)
+	local result = directions.forward(dig, attack, suck, noCheckInv)
 	directions.turnLeft()
 	directions.turnLeft()
 	return result
 end
 
-function directions.up(dig, attack, suck)
+function directions.up(dig, attack, suck, noCheckInv)
+	if attack == true then
+		while turtle.attackUp() do end
+	end
+	if suck == true then
+		directions.suck("up", noCheckInv)
+	end
 	local moved = turtle.up()
 	while not moved do
 		if dig == true then
-            while turtle.digUp() do end
+            directions.dig("up", noCheckInv)
         end
         if attack == true then
             while turtle.attackUp() do end
 		end
 		if suck == true then
-			directions.suck("up")
+			directions.suck("up", noCheckInv)
 		end
-		moved = turtle.up()
 	end
 	if moved then
 		ups = ups + 1
@@ -248,19 +260,24 @@ function directions.up(dig, attack, suck)
 	return moved
 end
 
-function directions.down(dig, attack, suck)
+function directions.down(dig, attack, suck, noCheckInv)
+	if attack == true then
+		while turtle.attackDown() do end
+	end
+	if suck == true then
+		directions.suck("down", noCheckInv)
+	end
 	local moved = turtle.down()
 	while not moved do
 		if dig == true then
-            while turtle.digDown() do end
+            directions.dig("down", noCheckInv)
         end
         if attack == true then
             while turtle.attackDown() do end
 		end
 		if suck == true then
-			directions.suck("down")
+			directions.suck("down", noCheckInv)
 		end
-		moved = turtle.down()
 	end
 	if moved then
 		ups = ups - 1
@@ -272,27 +289,27 @@ function directions.down(dig, attack, suck)
 	return moved
 end
 
-function directions.left(dig, attack, suck)
+function directions.left(dig, attack, suck, noCheckInv)
 	directions.turnLeft()
-	local result = directions.forward(dig, attack, suck)
+	local result = directions.forward(dig, attack, suck, noCheckInv)
 	directions.turnRight()
 	return result
 end
 
-function directions.right(dig, attack, suck)
+function directions.right(dig, attack, suck, noCheckInv)
 	directions.turnRight()
-	local result = directions.forward(dig, attack, suck)
+	local result = directions.forward(dig, attack, suck, noCheckInv)
 	directions.turnLeft()
 	return result
 end
 
-function directions.goToPosition(forwards, rights, ups, facing)
-	sys.log("Going to position ", forwards, rights, ups, facing)
+function directions.goToPosition(fs, rs, us, facing)
+	sys.log("Going To Position: " .. tostring(fs) .. ", " .. tostring(rs) .. ", " .. tostring(us) .. ", " facing)
 	-- face forward
 	directions.setFacing("forward")
 	-- reduce and follow
 	-- up + down
-	local vertical = ups
+	local vertical = directions.getUps() - us
 	sys.log("vertical: " .. tostring(vertical))
 	if vertical > 0 then
 		-- go down
@@ -306,7 +323,7 @@ function directions.goToPosition(forwards, rights, ups, facing)
 		end
 	end
 	-- left + right
-	local horizontal = rights
+	local horizontal = directions.getRights() - rs
 	sys.log("horizontal: " .. tostring(horizontal))
 	if horizontal > 0 then
 		-- go right
@@ -320,7 +337,7 @@ function directions.goToPosition(forwards, rights, ups, facing)
 		end
 	end
 	-- foward + back
-	local dist = forwards
+	local dist = directions.getForwards() - fs
 	sys.log("distance: " .. tostring(dist))
 	if dist > 0 then
 		-- go backward
