@@ -75,7 +75,7 @@ function directions.getFacingInt(facing)
 	end
 end
 
-function direction.setFacing(facing)
+function directions.setFacing(facing)
 	-- diff of facing to current facing
 	local turns = directions.getFacingInt(facing) - directions.getFacingInt(direction)
 	if turns == 0 then
