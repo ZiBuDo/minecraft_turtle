@@ -12,7 +12,7 @@ function sys.clearOutLog()
 	end
 end
 
-function sys.log()
+function sys.log(text)
 	-- Print that outputs to stdout and file
 	print("[" .. os.time() .. "]" .. text)
 	local file = fs.open("/turtleLog", "a")
