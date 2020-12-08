@@ -93,14 +93,14 @@ end
 -- branch size
 function fork()
 	for i = 1, branchSize do
-		forward(true, true, false)
-		check(blockRoutine) -- check for veins
+		directions.forward(true, true, false)
+		directions.check(blockRoutine) -- check for veins
 	end
 	sys.log("[branch]: Returning!")
 	-- 180 turn back
 	directions.turnAround()
 	for i = 1, branch do
-		forward(true, true, false)
+		directions.forward(true, true, false)
 	end
 	sys.log("[branch]: Returned!")
 end
@@ -108,11 +108,11 @@ end
 -- main loop using scoped globals
 function main()
 	-- go to 3 for branching
-	while forward(false, true, false) do end
+	while directions.forward(false, true, false) do end
 	for i = 1, 3 do
-		forward(true, true, false)
+		directions.forward(true, true, false)
 		-- check around
-		check(blockRoutine)
+		directions.check(blockRoutine)
 	end
 	directions.turnLeft()
 	sys.log("[main]: Initiating branch Left!")
