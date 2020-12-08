@@ -14,6 +14,10 @@ end
 
 local inventoryChecker
 
+function inventory.getFuelSlot()
+	return fuel
+end
+
 function inventory.getFuelSafetyThreshold()
 	return fuelSafetyThreshold
 end

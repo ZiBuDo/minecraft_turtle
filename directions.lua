@@ -383,10 +383,10 @@ function directions.refuelAtHome()
 		suck = turtle.suck
 	end
 	-- at top
-	local count = turtle.getItemCount(fuel)
-	turtle.select(fuel)
-	suck(turtle.getItemSpace(fuel))
-	if turtle.getItemCount(fuel) > count then
+	local count = turtle.getItemCount(inventory.getFuelSlot())
+	turtle.select(inventory.getFuelSlot())
+	suck(turtle.getItemSpace(inventory.getFuelSlot()))
+	if turtle.getItemCount(inventory.getFuelSlot()) > count then
 		sys.log("Refueled at home")
 	end
 	directions.setFacing("forward")
