@@ -78,7 +78,7 @@ function blockRoutine(direction)
 	-- inspect block in direction, based on type do action
 	-- ensure original location + direction are maintained at end of routine
 	-- cases: lava, chest, ore, ignore
-	local exists, block = inspect(direction)
+	local exists, block = metadata.inspect(direction)
 	if not exists then
 		return
 	elseif minerals.isLava(block) and lavaRefuel then 

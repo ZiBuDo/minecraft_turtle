@@ -2,6 +2,8 @@
 	Loot from mobs
 ]]--
 
+local metadata = require("metadata")
+
 local mod = {}
 
 local loot = {}
@@ -24,7 +26,7 @@ loot["minecraft:diamond[0]"] = true
 -- check if a inv spot is a resource
 function mod.isLoot(detail)
 	for key, value in pairs(loot) do
-		if detailToBlockString(detail) == key and value then
+		if metadata.detailToBlockString(detail) == key and value then
 			 return true
 		end
 	end

@@ -2,6 +2,8 @@
 	Chunk loader information
 ]]--
 
+local metadata = require("metadata")
+
 -- fuel in hours
 local chunkFuelResource = {}
 chunkFuelResource["railcraft:dust[0]"] = 2
@@ -34,7 +36,7 @@ else
 		turtle.select(invStart)
 	else
 		-- calculate time to die
-		local hours = chunkFuelResource[detailToBlockString(turtle.getItemDetail(chunkFuel))]
+		local hours = chunkFuelResource[metadata.detailToBlockString(turtle.getItemDetail(chunkFuel))]
 		local ttd = fs.open("/ttd", "w")
 		local seconds = hours * 60 * 60
 		ttd.writeLine(tostring(hours * 60 * 60)) -- write seconds
