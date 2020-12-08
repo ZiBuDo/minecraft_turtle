@@ -2,6 +2,7 @@
     write config file of type of directive and run startup
 ]]--
 
+local sys = require("sys")
 
 local directives = { "miner", "dungeon" }
 
@@ -18,6 +19,7 @@ end
 local index = tonumber(char)
 
 local directive = directives[index]
+sys.log("Installing directive " .. directive)
 local configFile = fs.open("/config", "w")
 configFile.writeLine(directive)
 configFile.close()
