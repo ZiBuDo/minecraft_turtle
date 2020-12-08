@@ -395,13 +395,14 @@ end
 
 -- drop off method
 function directions.dropOffInventory()
+	sys.log("Dropping off haul into chest @ " .. chestDirection)
 	local drop
-	if direction == "up" then
+	if chestDirection == "up" then
 		drop = turtle.dropUp
-	elseif direction == "down" then
+	elseif chestDirection == "down" then
 		drop = turtle.dropDown
 	else
-		directions.setFacing(refuelDirection)
+		directions.setFacing(chestDirection)
 		drop = turtle.drop
 	end
 	local space = true
