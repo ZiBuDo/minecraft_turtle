@@ -310,7 +310,6 @@ function directions.goToPosition(fs, rs, us, facing)
 	-- reduce and follow
 	-- up + down
 	local vertical = directions.getUps() - us
-	sys.log("vertical: " .. tostring(vertical))
 	if vertical > 0 then
 		-- go down
 		for i = 1, vertical do
@@ -324,30 +323,28 @@ function directions.goToPosition(fs, rs, us, facing)
 	end
 	-- left + right
 	local horizontal = directions.getRights() - rs
-	sys.log("horizontal: " .. tostring(horizontal))
 	if horizontal > 0 then
 		-- go right
 		for i = 1, horizontal do
-			left(true, true, false, true)
+			directions.left(true, true, false)
 		end
 	elseif horizontal < 0 then
 		-- go left
 		for i = 1, -horizontal do
-			right(true, true, false, true)
+			directions.right(true, true, false)
 		end
 	end
 	-- foward + back
 	local dist = directions.getForwards() - fs
-	sys.log("distance: " .. tostring(dist))
 	if dist > 0 then
 		-- go backward
 		for i = 1, dist do
-			backward(true, true, false, true)
+			directions.backward(true, true, false)
 		end
 	elseif dist < 0 then
 		-- go forward
 		for i = 1, -dist do
-			forward(true, true, false, true)
+			directions.forward(true, true, false)
 		end
 	end
 	directions.setFacing(facing)
