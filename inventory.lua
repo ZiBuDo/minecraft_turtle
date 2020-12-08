@@ -74,7 +74,7 @@ function inventory.dumpWaste()
 		end
 	end
 	inventory.reduceInventory()
-	turtle.select(1)
+	turtle.select(invStart)
 end
 
 -- refuel method
@@ -82,6 +82,7 @@ function inventory.refuel()
 	local currentLevel = turtle.getFuelLevel()
 	if currentLevel < fuelSafetyThreshold then --check fuel
 		sys.log("[fuelCheck]: Fuel Level Low! Attempting to Refuel")
+		-- refuel above threshold
 		while turtle.getItemCount(fuel) > 0 and not (turtle.getFuelLevel() > fuelSafetyThreshold) do
 			turtle.select(fuel)
 			turtle.refuel(1)
@@ -93,6 +94,7 @@ function inventory.refuel()
 			return false
 		end
 	end
+	turtle.select(invStart)
 	return true
 end
 
