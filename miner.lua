@@ -99,7 +99,7 @@ function fork()
 	sys.log("[branch]: Returning!")
 	-- 180 turn back
 	directions.turnAround()
-	for i = 1, branch do
+	for i = 1, branchSize do
 		directions.forward(true, true, false)
 	end
 	sys.log("[branch]: Returned!")
