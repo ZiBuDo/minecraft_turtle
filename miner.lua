@@ -58,7 +58,7 @@ function mineOre(direction, block)
 	end
 	if minerals.hasSpaceToHarvest(block) then
 		sys.log("[mineOre]: Attempting to mine Ore! "  .. metadata.blockToString(block))
-		turtle.select(invStart)
+		turtle.select(inventory.getInvStart())
 		fwd(true, true, false)
 		sys.log("[mineOre]: Dug ore!")
 		veinLength = veinLength + 1
