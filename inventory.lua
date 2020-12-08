@@ -93,6 +93,7 @@ function inventory.refuel()
 			return false
 		end
 	end
+	return true
 end
 
 
