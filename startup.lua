@@ -1,6 +1,5 @@
 --[[
-    https://pastebin.com/RM6PJHQ5
-    Command: pastebin get RM6PJHQ5 startup
+    Command: wget https://raw.githubusercontent.com/ZiBuDo/minecraft_turtle/main/startup.lua startup
              startup
     Installer <call this startup>
 
@@ -14,28 +13,25 @@
     Install things based on config file "<file>" and run after home
     If no config then dont run aynthing
 ]]--
-local utils = {}
--- utils["chunkLoader"] = ""
-utils["loot"] = "meF1m5tQ"
-utils["minerals"] = "4pdXNEJk"
-utils["metadata"] = "hJjQW9we"
-utils["status"] = "Jdi1z66j"
-utils["directions"] = "rZCBaHQY"
-utils["utils"] = "Trsh048i"
-utils["home"] = "qDWsjxMc"
-utils["sys"] = "4rqZqTpv"
 
-local directives = {}
-directives["miner"] = "3V9bKEbv"
-directives["dungeon"] = "irRH1pk6"
+local url = "https://raw.githubusercontent.com/ZiBuDo/minecraft_turtle/main/"
+local ext = ".lua"
+
+function buildUrl(name)
+    return url .. name .. ext
+end
+
+local utils = { "loot", "minerals", "metadata", "status", "directions", "inventory", "home", "sys"}
+
+local directives = { "miner", "dungeon" }
 
 local programName, newProgramName = "startup", "startup_new"
 local running = shell.getRunningProgram()
 print("Running " .. running)
 if running ~= newProgramName then
     print("Updating Startup Script")
-    shell.run("pastebin", "get", "RM6PJHQ5", "startup_new")
-    shell.execute("startup_new")
+    shell.run("wget", buildUrl(startup), newProgramName)
+    shell.execute(newProgramName)
 else
     -- actually run script since in new
     -- Clear Old Startup
@@ -54,13 +50,13 @@ else
             print("Removing old " .. key)
             fs.delete("/" .. key)
         end
-        shell.run("pastebin", "get", value, key)
+        shell.run("wget", buildUrl(value), value)
 	end
 
     -- configuration file read
     local directive
     if fs.exists("/config") then
-        local configFile = fs.open("/config")
+        local configFile = fs.open("/config", "r")
         directive = configFile.readLine()
         configFile.close()
     end
@@ -72,7 +68,7 @@ else
             print("Removing old " .. directive)
             fs.delete("/" .. directive)
         end
-        shell.run("pastebin", "get", directives[directives], directives)
+        shell.run("wget", buildUrl(directive), directive)
     end
 
     -- Run Home

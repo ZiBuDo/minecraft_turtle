@@ -1,6 +1,5 @@
 --[[
-https://pastebin.com/3V9bKEbv
-
+	Chunk loader information
 ]]--
 
 -- fuel in hours

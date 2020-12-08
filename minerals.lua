@@ -1,9 +1,8 @@
 --[[
-	https://pastebin.com/4pdXNEJk
 	Minerals Metadata
 ]]--
 
-local metadata, utils = require("metadata"), require("utils")
+local metadata, inventory = require("metadata"), require("inventory")
 
 local minerals = {}
 
@@ -100,7 +99,7 @@ end
 function minerals.hasSpaceToHarvest(block, recurse)
 	local resource = minerals.getBlockResource(block)
 	-- if inv full then check stacks
-	for i = utils.getInvStart(), utils.getInvEnd() do
+	for i = inventory.getInvStart(), inventory.getInvEnd() do
 		if turtle.getItemCount(i) == 0 then
 			return true
 		end
@@ -114,7 +113,7 @@ function minerals.hasSpaceToHarvest(block, recurse)
 		return false
 	end
 	-- dump and try again
-	utils.dumpWaste()
+	inventory.dumpWaste()
 	return minerals.hasSpaceToHarvest(block, true)
 end
 

@@ -1,5 +1,4 @@
 --[[
-	https://pastebin.com/meF1m5tQ
 	Loot from mobs
 ]]--
 

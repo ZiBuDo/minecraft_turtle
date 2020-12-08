@@ -1,5 +1,4 @@
 --[[
-	https://pastebin.com/3V9bKEbv
 	Originally Sourced from:
 	http://www.computercraft.info/forums2/index.php?/topic/19777-kings-branch-mining-script/
 	Slot 1: Bucket
@@ -9,21 +8,19 @@
 	chest for loot below
 ]]--
  
-local utils, status = require("utils"), require("status")
-local directions = require("directions")
+local inventory, sys, directive, metadata = require("inventory"), require("sys"), require("directive"), require("metadata")
+local directions, minerals = require("directions"), require("minerals")
 
-local args, distance, branch, vein, bucket, branchSize = { ... }, 0, 0, 0, 1, 15
+local args, bucket, branchSize = { ... }, 1, 15
 
 local lavaRefuel = true
 
-utils.clearOutLog()
-
 if turtle.getItemCount(bucket) ~= 1 then
-	print("No bucket in slot " .. tostring(bucket) .. " continuing without lava refuel option")
+	sys.log("No bucket in slot " .. tostring(bucket) .. " continuing without lava refuel option")
 	lavaRefuel = false
 else
 	-- set inv start to 2 if bucket exists
-	utils.setInvStart(2)
+	inventory.setInvStart(2)
 end
 
 -- refuel with lava
@@ -40,40 +37,38 @@ function refuelLava(direction)
 	place()
 	if place() and turtle.refuel() then
 		turtle.select(bucket)
-		utils.log("[refuelLava]: Refueled using lava source!")
+		sys.log("[refuelLava]: Refueled using lava source!")
 	end
-	turtle.select(utils.getInvStart())
+	turtle.select(inventory.getInvStart())
 end
 
 -- recursive method for vein mining
 function mineOre(direction, block)
 	local veinLength = 0 --local vein branch
-	local fwd, rev, dig, attack
+	local fwd, rev
 	if not direction then
-		fwd = forward
-		rev = backward
+		fwd = directions.forward
+		rev = directions.backward
 	elseif direction:lower() == "down" then
-		fwd = down
-		rev = up
+		fwd = directions.down
+		rev = directions.up
 	elseif direction:lower() == "up" then
-		fwd = up
-		rev = down
+		fwd = directions.up
+		rev = directions.down
 	end
-	if hasSpaceToHarvest(block) then
-		utils.log("[mineOre]: Attempting to mine Ore! "  .. blockToString(block))
+	if minerals.hasSpaceToHarvest(block) then
+		sys.log("[mineOre]: Attempting to mine Ore! "  .. metadata.blockToString(block))
 		turtle.select(invStart)
-		fwd()
-		utils.log("[mineOre]: Dug ore!")
-		vein = vein + 1
+		fwd(true, true, false)
+		sys.log("[mineOre]: Dug ore!")
 		veinLength = veinLength + 1
-		status.isOk() -- moved so check ok
-		check() -- finish vein and leave un touched non main vein ores alone
+		directions.check(blockRoutine) -- finish vein and leave un touched non main vein ores alone
 	else
-		utils.log("[mineOre]: No Space to Harvest This Ore! " .. blockToString(block))
+		sys.log("[mineOre]: No Space to Harvest This Ore! " .. metadata.blockToString(block))
 	end
 	-- return out of vein
 	while veinLength > 0 do
-		rev()
+		rev(true, true, false)
 		veinLength = veinLength - 1
 	end
 end
@@ -86,11 +81,11 @@ function blockRoutine(direction)
 	local exists, block = inspect(direction)
 	if not exists then
 		return
-	elseif isLava(block) and lavaRefuel then 
+	elseif minerals.isLava(block) and lavaRefuel then 
 		refuelLava(direction)
-	elseif isChest(block) then
+	elseif minerals.isChest(block) then
 		return -- todo
-	elseif isMineral(block) then
+	elseif minerals.isMineral(block) then
 		mineOre(direction, block)
 	end
 end
@@ -98,91 +93,36 @@ end
 -- branch size
 function fork()
 	for i = 1, branchSize do
-		if not isAbleToContinueMining() then break end
-		forward()
-		branch = branch + 1
-		if not status.isOk() then break end 
-		check() -- check for veins
-		if not status.getOk() then break end
+		forward(true, true, false)
+		check(blockRoutine) -- check for veins
 	end
-	utils.log("[branch]: Returning!")
+	sys.log("[branch]: Returning!")
 	-- 180 turn back
-	turnLeft()
-	turnLeft()
+	directions.turnAround()
 	for i = 1, branch do
-		forward()
+		forward(true, true, false)
 	end
-	utils.log("[branch]: Returned!")
-	branch = 0
-end
-
--- check fuel and refuel if possible
-function fuelCheck()
-	turtle.select(bucket)
-	turtle.refuel()
-	local threshold = fuelSafetyThreshold + distance + branch + vein
-	turtle.select(invStart)
-end
-
--- method to determine if it has space
-function isAbleToContinueMining()
-	-- space
-	hasSpace()
-	return ok
+	sys.log("[branch]: Returned!")
 end
 
 -- main loop using scoped globals
 function main()
-	status.isOk() -- init status
-	-- go until back to non branched area
-	utils.log("[main]: Going Back to Work!")
-	while moveForward() and status.isOk() do
-		distance = distance + 1
+	-- go to 3 for branching
+	while forward(false, true, false) do end
+	for i = 1, 3 do
+		forward(true, true, false)
+		-- check around
+		check(blockRoutine)
 	end
-	utils.log("[main]: Made It Back to end of tunnel!")
-	while ok do
-		-- go to 3 for branching
-		for i = 1, 3 do
-			if not isAbleToContinueMining() then break end
-			forward()
-			distance = distance + 1
-			if not status.isOk() then break end -- quit for loop
-			-- check around
-			check()
-			if not status.getOk() then break end -- quit for loop
-		end
-		if not status.getOk() then break end -- don't branch come home
-		recordReducedDirections()
-		turnLeft()
-		utils.log("[main]: Initiating branch Left!")
-		fork()
-		-- face forward
-		turnLeft()
-		recordReducedDirections()
-		if not status.getOk() then break end --not ok, don't run second branch
-		turnRight()
-		utils.log("[main]: Initiating branch Right!")
-		fork()
-		-- face forward
-		turnRight()
-		recordReducedDirections()
-		if not status.getOk() then break end
-	end
-	--not ok, return to base
-	utils.log("[main]: Returning to base!")
-	-- 180 back down the tunnel
-	turnLeft()
-	turnLeft()
-	-- brute force home
-	repeat
-		forward()
-		distance = distance - 1
-		recordReducedDirections()
-	until distance == 0
-	turnLeft()
-	turnLeft()
+	directions.turnLeft()
+	sys.log("[main]: Initiating branch Left!")
+	fork()
+	sys.log("[main]: Initiating branch Right!")
+	fork()
+	-- face forward
+	directions.turnRight()
 end
 
-utils.log("Starting!")
-main()
-utils.log("Finished")
+
+inventory.setKeepInventory(minerals.isResource)
+directive.run("miner", main)

@@ -1,12 +1,11 @@
 --[[
-    https://pastebin.com/irRH1pk6
 	Purpose is to go from start to end of wall and suck and attack back and forth
 	
 	chest behind it
 	fuel below it
 ]]--
 
-local utils, directions, loot, status = require("utils"), require("directions"), require("loot"), require("status")
+local inventory, directions, loot, directive = require("inventory"), require("directions"), require("loot"), require("directive")
 
 local args = { ... }
 
@@ -16,28 +15,13 @@ function isEnd()
 end
 
 function main()
-	utils.setKeepInventory(loot.isLoot)
-    -- slay, output to chest, reduce waste, finish when out of fuel or chest full
-    while status.getOk() do
-        directions.forward(false, true, true, false, isEnd) -- forward attack
-        if not status.getOk() then break end
-        directions.turnAround()
-        directions.forward(false, true, true, false, isEnd) -- back attack
-        directions.turnAround() -- face forward
-        if not status.getOk() then break end
-        directions.turnAround() -- if ok turn around and insert into chest
-		utils.dropOffInventory()
-		utils.refuelAtHome("up")
-        directions.turnAround() -- turn back around
-        if not status.getOk() then break end
-    end
-    directions.turnAround() -- turn around to get home
-    directions.forward(false, true, true, true, isEnd) -- back attack
-    utils.dropOffInventory()
+    while not isEnd() and directions.forward(false, true, true) do end -- forward attack
+    directions.turnAround()
+    while not isEnd() and directions.forward(false, true, true) do end -- forward attack
     directions.turnAround() -- face forward
 end
 
-
-print("Slaaaaying!")
-main()
-print("Done Slaaaaying!")
+directions.setChestDirection("backward")
+directions.setRefuelDirection("down")
+inventory.setKeepInventory(loot.isLoot)
+directive.run("dungeon", main)

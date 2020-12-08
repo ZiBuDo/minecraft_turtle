@@ -1,5 +1,4 @@
 --[[
-	https://pastebin.com/hJjQW9we
 	Get Information about the world
 ]]--
 

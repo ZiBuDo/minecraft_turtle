@@ -1,5 +1,4 @@
 --[[
-    https://pastebin.com/4rqZqTpv
     System utils such as logging
 ]]--
 
