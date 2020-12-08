@@ -41,9 +41,9 @@ function directions.pickUpFromFile(file)
 	local file = fs.open("/" .. file, "r")
 	local forwards = file.readLine()
 	local rights = file.readLine()
-	local lefts = file.readLine()
+	local ups = file.readLine()
 	local facing = file.readLine()
-	directions.setPosition(forwards, rights, lefts, facing)
+	directions.setPosition(forwards, rights, ups, facing)
 	file.close()
 end
 
@@ -147,7 +147,7 @@ function directions.recordPosition(file)
 end
 
 function directions.recordDirections()
-	directions.recordPosition("directions")
+	directions.recordPosition("position")
 end
 
 function directions.turnRight()
