@@ -30,7 +30,7 @@ local running = shell.getRunningProgram()
 print("Running " .. running)
 if running ~= newProgramName then
     print("Updating Startup Script")
-    shell.run("wget", buildUrl(startup), newProgramName)
+    shell.run("wget", buildUrl(programName), newProgramName)
     shell.execute(newProgramName)
 else
     -- actually run script since in new
