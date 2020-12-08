@@ -117,4 +117,4 @@ function minerals.hasSpaceToHarvest(block, recurse)
 	return minerals.hasSpaceToHarvest(block, true)
 end
 
-return blocks
+return minerals
