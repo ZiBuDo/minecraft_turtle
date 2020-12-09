@@ -35,6 +35,9 @@ function metadata.isChest(block)
 end
 
 function metadata.isLadder(detail)
+	if not detail then
+		return false
+	end
 	local name = metadata.detailToBlockString(detail)
 	if name:find("ladder", 1, true) then
 		return true

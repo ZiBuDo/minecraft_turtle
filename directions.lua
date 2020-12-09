@@ -501,6 +501,7 @@ function directions.placeAndInspectLadder()
 	local movement = 0
 	while not turtle.place() do 
 		directions.forward(true, true, false, true)
+		directions.backward(true, true, false, true)
 	end
 	local cardinal = metadata.getLadderFacing(metadata.inspect())
 	turtle.dig()
