@@ -36,11 +36,7 @@ end
 
 function metadata.isLadder(detail)
 	local name = metadata.detailToBlockString(detail)
-	if name == "minecraft:ladder[0]" or 
-		name == "minecraft:ladder[1]" or 
-		name == "minecraft:ladder[2]" or 
-		name == "minecraft:ladder[3]" or 
-		name == "minecraft:ladder[4]" then
+	if name:find("ladder", 1, true) then
 		return true
 	end
 	return false
