@@ -28,7 +28,7 @@ end
 -- check if chest to suck
 function metadata.isChest(block)
 	local name = metadata.blockToString(block)
-	if name == "minecraft:chest[0]" then
+	if name:find("chest", 1, true) then
 		return true
 	end
 	return false
