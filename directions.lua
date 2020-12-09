@@ -559,7 +559,7 @@ function directions.orientate()
 	end
 	local current = directions.getDirectionFromCardinal(directions.placeAndInspectLadder())
 	-- diff of facing to current facing to face forward
-	local turns = directions.getCardinalInt(facing) - directions.getCardinalInt(direction)
+	local turns = directions.getCardinalInt(forward) - directions.getCardinalInt(current)
 	if turns == 0 then
 		return
 	elseif turns < 0 then
