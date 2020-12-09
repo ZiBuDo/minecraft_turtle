@@ -2,7 +2,7 @@
 	Inventory turtle methods
 ]]--
 
-local sys = require("sys")
+local sys, metadata = require("sys"), require("metadata")
 
 local inventory = {}
 
@@ -10,6 +10,11 @@ local fuelAmount, fuelSafetyThreshold, fuel, invStart, invEnd, ladder = nil, 256
 
 if turtle.getItemCount(fuel) == 0 then
 	sys.log("No fuel found running on " .. tostring(turtle.getFuelLevel()))
+end
+
+if not metadata.isLadder(turtle.getItemDetail(ladder)) then
+	sys.log("No ladder in slot " .. tostring(ladder) .. ". Neeed for orientation")
+	error()
 end
 
 local inventoryChecker

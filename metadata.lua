@@ -34,8 +34,8 @@ function metadata.isChest(block)
 	return false
 end
 
-function metadata.isLadder(block)
-	local name = metadata.blockToString(block)
+function metadata.isLadder(detail)
+	local name = metadata.detailToBlockString(detail)
 	if name == "minecraft:ladder[0]" or 
 		name == "minecraft:ladder[1]" or 
 		name == "minecraft:ladder[2]" or 
@@ -46,7 +46,7 @@ function metadata.isLadder(block)
 	return false
 end
 
-function metadata.getLadderFacing(block)
+function metadata.getLadderFacing(exists, block)
 	return block.state.facing
 end
 
