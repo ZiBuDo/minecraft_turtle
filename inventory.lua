@@ -6,7 +6,7 @@ local sys = require("sys")
 
 local inventory = {}
 
-local fuelAmount, fuelSafetyThreshold, fuel, invStart, invEnd = nil, 256, 16, 1, 15
+local fuelAmount, fuelSafetyThreshold, fuel, invStart, invEnd, ladder = nil, 256, 16, 1, 14, 15
 
 if turtle.getItemCount(fuel) == 0 then
 	sys.log("No fuel found running on " .. tostring(turtle.getFuelLevel()))
@@ -16,6 +16,10 @@ local inventoryChecker
 
 function inventory.getFuelSlot()
 	return fuel
+end
+
+function inventory.getLadderSlot()
+	return ladder
 end
 
 function inventory.getFuelSafetyThreshold()

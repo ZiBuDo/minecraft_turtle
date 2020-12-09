@@ -85,15 +85,6 @@ function minerals.isLava(block)
 	return false
 end
 
--- check if chest to suck
-function minerals.isChest(block)
-	local name = metadata.blockToString(block)
-	if name == "minecraft:chest[0]" then
-		return true
-	end
-	return false
-end
-
 -- method that takes in block and determines if there is space to harvest it
 -- iterate through inv and check if resource count is < space for it anywhere
 function minerals.hasSpaceToHarvest(block, recurse)

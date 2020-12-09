@@ -25,4 +25,30 @@ function metadata.inspect(direction)
 	end
 end
 
+-- check if chest to suck
+function metadata.isChest(block)
+	local name = metadata.blockToString(block)
+	if name == "minecraft:chest[0]" then
+		return true
+	end
+	return false
+end
+
+function metadata.isLadder(block)
+	local name = metadata.blockToString(block)
+	if name == "minecraft:ladder[0]" or 
+		name == "minecraft:ladder[1]" or 
+		name == "minecraft:ladder[2]" or 
+		name == "minecraft:ladder[3]" or 
+		name == "minecraft:ladder[4]" then
+		return true
+	end
+	return false
+end
+
+function metadata.getLadderFacing(block)
+	return block.state.facing
+end
+
+
 return metadata

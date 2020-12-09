@@ -5,7 +5,7 @@
 	direction facing
 ]]--
 
-local sys, inventory = require("sys"), require("inventory")
+local sys, inventory, metadata = require("sys"), require("inventory"), require("metadata")
 local directions = {}
 
 -- direction can be facing forward, facing right, facing left or facing backward and manipulates what forward means
@@ -74,7 +74,6 @@ function directions.getFacingInt(facing)
 	elseif facing == "left" then
 		return 3
 	end
-	return 0 -- up and down
 end
 
 function directions.setFacing(facing)
@@ -140,14 +139,16 @@ function directions.dig(direction, noCheck)
 	return dug
 end
 
-function directions.recordPosition(file)
-	local file = fs.open("/" .. file, "w")
+function directions.recordPosition(fileName, fileHandle)
+	local file = fs.open("/" .. fileName, "w")
     file.writeLine(tostring(forwards))
     file.writeLine(tostring(rights))
 	file.writeLine(tostring(ups))
 	file.writeLine(direction)
 	file.close()
 end
+
+local directionFile
 
 function directions.recordDirections()
 	directions.recordPosition("position")
@@ -413,6 +414,11 @@ function directions.refuelAtHome()
 		directions.setFacing(refuelDirection)
 		suck = turtle.suck
 	end
+	local exists, block = metadata.inspect(refuelDirection)
+	if not metadata.isChest(block) then
+		sys.log("Chest is not in refuel spot, closing routine")
+		error()
+	end
 	-- at top
 	local count = turtle.getItemCount(inventory.getFuelSlot())
 	turtle.select(inventory.getFuelSlot())
@@ -435,6 +441,11 @@ function directions.dropOffInventory()
 	else
 		directions.setFacing(chestDirection)
 		drop = turtle.drop
+	end
+	local exists, block = metadata.inspect(refuelDirection)
+	if not metadata.isChest(block) then
+		sys.log("Chest is not in inventory drop off spot, closing routine")
+		error()
 	end
 	local space = true
 	-- at bottom
@@ -482,6 +493,78 @@ function directions.loop()
 	directions.atHomeRoutine()
 	-- go back to saved position
 	directions.goToPosition(fs, rs, us, facing)
+end
+
+function directions.placeAndInspectLadder()
+	-- move forward until ladder is placeable
+	turtle.select(inventory.getLadderSlot())
+	local movement = 0
+	while not turtle.place() do 
+		directions.forward(true, true, false, true)
+	end
+	local cardinal = metadata.getLadderFacing(metadata.inspect())
+	turtle.dig()
+	turtle.select(inventory.getInvStart())
+	return cardinal
+end
+
+function directions.getDirectionFromCardinal(cardinal)
+	if cardinal == "north" then
+		return "south"
+	elseif cardinal == "south" then
+		return "north"
+	elseif cardinal == "east" then
+		return "west"
+	elseif cardinal == "west" then
+		return "east"
+	end
+end
+
+function directions.getCardinalInt(cardinal)
+	if cardinal == "north" then
+		return 0
+	elseif cardinal == "east" then
+		return 1
+	elseif cardinal == "south" then
+		return 2
+	elseif cardinal == "west" then
+		return 3
+	end
+end
+
+-- find forward and set in file
+function directions.recordForward()
+	local file = fs.open("/forward", "w")
+	file.writeLine(directions.getDirectionFromCardinal(directions.placeAndInspectLadder()))
+	file.close()
+end
+
+function directions.getForward()
+	local file = fs.open("/forward", "r")
+	local cardinal = file.readLine()
+	file.close()
+	return cardinal
+end
+
+-- place ladder and get opposite facing to find direction facing
+function directions.orientate()
+	local current = directions.getDirectionFromCardinal(directions.placeAndInspectLadder())
+	local forward = directions.getForward()
+	-- diff of facing to current facing to face forward
+	local turns = directions.getCardinalInt(facing) - directions.getCardinalInt(direction)
+	if turns == 0 then
+		return
+	elseif turns < 0 then
+		for i = 1, -turns do
+			turtle.turnLeft()
+		end
+	else
+		for i = 1, turns do
+			turtle.turnRight()
+		end
+	end
+	direction = "forward"
+	directions.recordDirections()
 end
 
 return directions

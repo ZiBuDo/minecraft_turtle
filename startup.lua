@@ -71,6 +71,11 @@ else
         shell.run("wget", buildUrl(directive), directive)
     end
 
+    if fs.exists("/debug") then
+        print("Debug mode ending, rm debug to go home and resume")
+        return
+    end
+
     -- Run Home
     print("Ensuring turtle is home")
     shell.execute("home")

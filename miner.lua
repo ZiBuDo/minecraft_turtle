@@ -83,7 +83,7 @@ function blockRoutine(direction)
 		return
 	elseif minerals.isLava(block) and lavaRefuel then 
 		refuelLava(direction)
-	elseif minerals.isChest(block) then
+	elseif metadata.isChest(block) then
 		return -- todo
 	elseif minerals.isMineral(block) then
 		mineOre(direction, block)
