@@ -540,6 +540,9 @@ function directions.recordForward()
 end
 
 function directions.getForward()
+	if not fs.exists("/forward") then
+		return false
+	end
 	local file = fs.open("/forward", "r")
 	local cardinal = file.readLine()
 	file.close()
@@ -548,8 +551,13 @@ end
 
 -- place ladder and get opposite facing to find direction facing
 function directions.orientate()
-	local current = directions.getDirectionFromCardinal(directions.placeAndInspectLadder())
 	local forward = directions.getForward()
+	if not forward then
+		direction = "forward"
+		directions.recordDirections()
+		return
+	end
+	local current = directions.getDirectionFromCardinal(directions.placeAndInspectLadder())
 	-- diff of facing to current facing to face forward
 	local turns = directions.getCardinalInt(facing) - directions.getCardinalInt(direction)
 	if turns == 0 then
