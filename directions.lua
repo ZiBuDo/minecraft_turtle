@@ -499,7 +499,7 @@ function directions.placeAndInspectLadder()
 	-- move forward until ladder is placeable
 	turtle.select(inventory.getLadderSlot())
 	local movement = 0
-	local placed = turtle.place()
+	local placed = false
 	while not placed do 
 		directions.forward(true, true, false, true)
 		turtle.turnLeft()
