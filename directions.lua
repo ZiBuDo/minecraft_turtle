@@ -585,7 +585,6 @@ function directions.orientate()
 		end
 	end
 	direction = "forward"
-	directions.recordDirections()
 end
 
 return directions
