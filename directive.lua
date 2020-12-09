@@ -13,8 +13,9 @@ function directive.run(name, thread)
     sys.log("Starting " .. name)
     os.setComputerLabel(name .. " " .. tostring(os.getComputerID()))
     -- assume orientated and get forward
-    directions.atHomeRoutine()
     directions.recordForward()
+    directions.goHome()
+    directions.atHomeRoutine()
     while true do
         thread()
     end
