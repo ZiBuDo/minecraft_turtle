@@ -502,6 +502,12 @@ function directions.placeAndInspectLadder()
 	local placed = turtle.place()
 	while not placed do 
 		directions.forward(true, true, false, true)
+		turtle.turnLeft()
+		turtle.dig()
+		turtle.turnLeft()
+		turtle.turnLeft()
+		turtle.dig()
+		turtle.turnLeft()
 		directions.backward(true, true, false, true)
 		placed = turtle.place()
 		if not placed then
