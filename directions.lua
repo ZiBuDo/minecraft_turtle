@@ -499,9 +499,14 @@ function directions.placeAndInspectLadder()
 	-- move forward until ladder is placeable
 	turtle.select(inventory.getLadderSlot())
 	local movement = 0
-	while not turtle.place() do 
+	local placed = turtle.place()
+	while not placed do 
 		directions.forward(true, true, false, true)
 		directions.backward(true, true, false, true)
+		placed = turtle.place()
+		if not placed then
+			directions.forward(true, true, false, true)
+		end
 	end
 	local cardinal = metadata.getLadderFacing(metadata.inspect())
 	turtle.dig()
