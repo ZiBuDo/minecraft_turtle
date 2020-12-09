@@ -330,12 +330,12 @@ function directions.goToPosition(fs, rs, us, facing)
 	if vertical > 0 then
 		-- go down
 		for i = 1, vertical do
-			down(true, true, false, true)
+			directions.down(true, true, false)
 		end
 	elseif vertical < 0 then
 		-- go up
 		for i = 1, -vertical do
-			up(true, true, false, true)
+			directions.up(true, true, false)
 		end
 	end
 	-- left + right
