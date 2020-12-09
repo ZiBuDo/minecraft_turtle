@@ -509,6 +509,7 @@ function directions.placeAndInspectLadder()
 		turtle.dig()
 		turtle.turnLeft()
 		directions.backward(true, true, false, true)
+		turtle.select(inventory.getLadderSlot())
 		placed = turtle.place()
 		if not placed then
 			directions.forward(true, true, false, true)
