@@ -4,7 +4,7 @@
 
 local directive
 if fs.exists("/config") then
-    local configFile = fs.open("/config")
+    local configFile = fs.open("/config", "r")
     directive = configFile.readLine()
     configFile.close()
 end
