@@ -473,6 +473,7 @@ function directions.atHomeRoutine()
 	directions.refuelAtHome()
 	local spaceAtHome = true
 	if inventory.isGatherer() then
+		inventory.dumpWaste()
 		spaceAtHome = directions.dropOffInventory()
 	end
 	local status = directions.checkStatus()
