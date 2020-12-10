@@ -106,20 +106,27 @@ function fork()
 end
 
 function main()
+	local distance = 0
 	-- go to 3 for branching
-	while directions.forward(false, true, false) do end
+	if distance == 0 then
+		while directions.forward(false, true, false) do 
+			distance = distance + 1
+		end
+	end
 	for i = 1, 3 do
 		directions.forward(true, true, false)
+		distance = distance + 1
 		-- check around
 		directions.check(blockRoutine)
 	end
 	directions.turnLeft()
 	sys.log("[main]: Initiating branch Left!")
-	fork()
+	fork() -- spits back backwards
 	sys.log("[main]: Initiating branch Right!")
 	fork()
 	-- face forward
 	directions.turnRight()
+	directions.goToPosition(distance, 0, 0, "forward")
 end
 
 
