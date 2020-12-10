@@ -11,12 +11,12 @@ chunkFuelResource["minecraft:ender_pearl[0]"] = 4
 chunkFuelResource["railcraft:dust[6]"] = 8
 chunkFuelResource["railcraft:dust[7]"] = 12
 
-local chunkLoaderA, chunkerLoaderB, chunkFuel, timeExpiration, timerId, epochStart = 13, 14, 15, nil, nil, 0
+local chunkLoaderA, chunkerLoaderB, chunkFuel, timeExpiration, timerId, epochStart = 12, 13, 14, nil, nil, 0
 
 local chunkLoading = true
 
-if turtle.getItemCount(chunkLoader) ~= 2 then
-	print("No chunk loaders found " .. tostring(chunkLoader) .. " please place 2 fueled chunk loaders in slot to use chunk loading")
+if turtle.getItemCount(chunkLoaderA) ~= 1 then
+	print("No chunk loader found " .. tostring(chunkLoader) .. " please place 1 chunk loader in slot to use chunk loading")
 	chunkLoading = false
 	invEnd = 14
 	-- eject if any <at home>
@@ -38,8 +38,8 @@ else
 		-- calculate time to die
 		local hours = chunkFuelResource[metadata.detailToBlockString(turtle.getItemDetail(chunkFuel))]
 		local ttd = fs.open("/ttd", "w")
-		local seconds = hours * 60 * 60
-		ttd.writeLine(tostring(hours * 60 * 60)) -- write seconds
+		local seconds = hours * 60 * 60 / 2 -- 2 chunk loaders
+		ttd.writeLine(tostring(seconds)) -- write seconds
 		file.close()
 		timeExpiration = seconds
 		epochStart = math.floor(os.epoch("utc") / 1000)

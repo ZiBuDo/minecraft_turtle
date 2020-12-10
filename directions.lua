@@ -228,13 +228,11 @@ function directions.forward(dig, attack, suck, noCheckInv)
 	return moved
 end
 
-function directions.backward(dig, attack, suck, noCheckInv, noTurn)
+function directions.backward(dig, attack, suck, noCheckInv)
 	--face forward effectively and go then face back
 	directions.turnAround()
 	local result = directions.forward(dig, attack, suck, noCheckInv)
-	if not noTurn then
-		directions.turnAround()
-	end
+	directions.turnAround()
 	return result
 end
 
@@ -306,21 +304,17 @@ function directions.down(dig, attack, suck, noCheckInv)
 	return moved
 end
 
-function directions.left(dig, attack, suck, noCheckInv, noTurn)
+function directions.left(dig, attack, suck, noCheckInv)
 	directions.turnLeft()
 	local result = directions.forward(dig, attack, suck, noCheckInv)
-	if not noTurn then
-		directions.turnRight()
-	end
+	directions.turnRight()
 	return result
 end
 
-function directions.right(dig, attack, suck, noCheckInv, noTurn)
+function directions.right(dig, attack, suck, noCheckInv)
 	directions.turnRight()
 	local result = directions.forward(dig, attack, suck, noCheckInv)
-	if not noTurn then
-		directions.turnLeft()
-	end
+	directions.turnLeft()
 	return result
 end
 
@@ -346,13 +340,15 @@ function directions.goToPosition(fs, rs, us, facing)
 	local horizontal = directions.getRights() - rs
 	if horizontal > 0 then
 		-- go right
+		directions.turnRight()
 		for i = 1, horizontal do
-			directions.left(true, true, false, true, true)
+			directions.forward(true, true, false, true)
 		end
 	elseif horizontal < 0 then
 		-- go left
+		directions.turnLeft()
 		for i = 1, -horizontal do
-			directions.right(true, true, false, true, true)
+			directions.forward(true, true, false, true)
 		end
 	end
 	directions.setFacing("forward")
@@ -360,8 +356,9 @@ function directions.goToPosition(fs, rs, us, facing)
 	local dist = directions.getForwards() - fs
 	if dist > 0 then
 		-- go backward
+		directions.turnAround()
 		for i = 1, dist do
-			directions.backward(true, true, false, true, true)
+			directions.backward(true, true, false, true)
 		end
 	elseif dist < 0 then
 		-- go forward
