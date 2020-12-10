@@ -105,7 +105,6 @@ function fork()
 	sys.log("[branch]: Returned!")
 end
 
--- main loop using scoped globals
 function main()
 	-- go to 3 for branching
 	while directions.forward(false, true, false) do end

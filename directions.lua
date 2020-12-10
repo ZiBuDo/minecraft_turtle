@@ -228,13 +228,13 @@ function directions.forward(dig, attack, suck, noCheckInv)
 	return moved
 end
 
-function directions.backward(dig, attack, suck, noCheckInv)
+function directions.backward(dig, attack, suck, noCheckInv, noTurn)
 	--face forward effectively and go then face back
-	directions.turnLeft()
-	directions.turnLeft()
+	directions.turnAround()
 	local result = directions.forward(dig, attack, suck, noCheckInv)
-	directions.turnLeft()
-	directions.turnLeft()
+	if not noTurn then
+		directions.turnAround()
+	end
 	return result
 end
 
@@ -306,17 +306,21 @@ function directions.down(dig, attack, suck, noCheckInv)
 	return moved
 end
 
-function directions.left(dig, attack, suck, noCheckInv)
+function directions.left(dig, attack, suck, noCheckInv, noTurn)
 	directions.turnLeft()
 	local result = directions.forward(dig, attack, suck, noCheckInv)
-	directions.turnRight()
+	if not noTurn then
+		directions.turnRight()
+	end
 	return result
 end
 
-function directions.right(dig, attack, suck, noCheckInv)
+function directions.right(dig, attack, suck, noCheckInv, noTurn)
 	directions.turnRight()
 	local result = directions.forward(dig, attack, suck, noCheckInv)
-	directions.turnLeft()
+	if not noTurn then
+		directions.turnLeft()
+	end
 	return result
 end
 
@@ -330,12 +334,12 @@ function directions.goToPosition(fs, rs, us, facing)
 	if vertical > 0 then
 		-- go down
 		for i = 1, vertical do
-			directions.down(true, true, false)
+			directions.down(true, true, false, true)
 		end
 	elseif vertical < 0 then
 		-- go up
 		for i = 1, -vertical do
-			directions.up(true, true, false)
+			directions.up(true, true, false, true)
 		end
 	end
 	-- left + right
@@ -343,12 +347,12 @@ function directions.goToPosition(fs, rs, us, facing)
 	if horizontal > 0 then
 		-- go right
 		for i = 1, horizontal do
-			directions.left(true, true, false)
+			directions.left(true, true, false, true, i ~= horizontal)
 		end
 	elseif horizontal < 0 then
 		-- go left
 		for i = 1, -horizontal do
-			directions.right(true, true, false)
+			directions.right(true, true, false, true, i ~= -horizontal)
 		end
 	end
 	-- foward + back
@@ -356,12 +360,12 @@ function directions.goToPosition(fs, rs, us, facing)
 	if dist > 0 then
 		-- go backward
 		for i = 1, dist do
-			directions.backward(true, true, false)
+			directions.backward(true, true, false, true, i ~= dist)
 		end
 	elseif dist < 0 then
 		-- go forward
 		for i = 1, -dist do
-			directions.forward(true, true, false)
+			directions.forward(true, true, false, true)
 		end
 	end
 	directions.setFacing(facing)
