@@ -105,8 +105,8 @@ function fork()
 	sys.log("[branch]: Returned!")
 end
 
+local distance = 0
 function main()
-	local distance = 0
 	-- go to 3 for branching
 	if distance == 0 then
 		while directions.forward(false, true, false) do 

@@ -347,20 +347,21 @@ function directions.goToPosition(fs, rs, us, facing)
 	if horizontal > 0 then
 		-- go right
 		for i = 1, horizontal do
-			directions.left(true, true, false, true, i ~= horizontal)
+			directions.left(true, true, false, true, true)
 		end
 	elseif horizontal < 0 then
 		-- go left
 		for i = 1, -horizontal do
-			directions.right(true, true, false, true, i ~= -horizontal)
+			directions.right(true, true, false, true, true)
 		end
 	end
+	directions.setFacing("forward")
 	-- foward + back
 	local dist = directions.getForwards() - fs
 	if dist > 0 then
 		-- go backward
 		for i = 1, dist do
-			directions.backward(true, true, false, true, i ~= dist)
+			directions.backward(true, true, false, true, true)
 		end
 	elseif dist < 0 then
 		-- go forward
